@@ -1,0 +1,79 @@
+/*
+Copyright 2014-2016 Intel Corporation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = "1.6"
+targetCompatibility = "1.6"
+
+// Versioning
+ext {
+    moeProject = 'MOE_MAC_CORE'
+    moeVersion = [:]
+}
+initMOEProject(project, [vMajor: 1, vMinor: 1, vPatch: 0])
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.moe:natj-api:1.0.+'
+}
+
+apply plugin: 'maven-publish'
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task sourceJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId 'org.moe'
+            artifactId 'moeMacCore'
+
+            from components.java
+
+            //artifact(javadocJar)
+            //artifact(sourceJar)
+
+            artifact source: 'build/native/macosx/x86_64/libmaccoreinlined.dylib',
+                    extension: "dylib",
+                    classifier: 'libmaccoreinlined_macosx_x86_64'
+        }
+    }
+}
+
+/*
+Compile native lib.
+ */
+task compileCoreInlinedNative(type: Exec) {
+    commandLine './build-native.sh'
+}
+if (!project.hasProperty("moe.native.skip")) {
+    compileJava.dependsOn compileCoreInlinedNative
+}

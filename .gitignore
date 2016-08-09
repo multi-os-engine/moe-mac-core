@@ -1,0 +1,19 @@
+# Output directories & Gradle
+.gradle
+bin
+build
+out
+
+# Idea
+moe.mac.core.iml
+moe.mac.core.ipr
+moe.mac.core.iws
+
+# Eclipse
+.classpath
+.project
+.settings
+
+# Other
+log
+logs

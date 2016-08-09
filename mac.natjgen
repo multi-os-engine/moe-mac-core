@@ -1,0 +1,35 @@
+{
+  "platform": "OS X",
+  "package-base": "mac",
+  "base-sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk",
+  "header-search-paths": [],
+  "user-header-search-paths": [],
+  "framework-search-paths": [],
+  "source": "#import \u003csys/stat.h\u003e\n#import \u003csys/fcntl.h\u003e\n#import \u003cFoundation/Foundation.h\u003e\n#import \u003cAppKit/AppKit.h\u003e\n",
+  "output": "src/main/java",
+  "docsets": [],
+  "unit-rules": [
+    {
+      "final": false,
+      "conditions": [
+        {
+          "condition": "path-prefix",
+          "value": "${SDK}/usr/include/sys"
+        }
+      ],
+      "actions": [
+        {
+          "action": "replace-package-base",
+          "value": "mac.sys"
+        }
+      ]
+    }
+  ],
+  "logs-path": "${PROJECT}/logs/natjgen/${DATETIME}.html",
+  "type-config-output": "${PROJECT}/typeconfig.ngtconf",
+  "type-config-clean-output": false,
+  "header-file-resolving-paths": [
+    "${SDK}/usr/include",
+    "${SDK}/System/Library/Frameworks"
+  ]
+}
